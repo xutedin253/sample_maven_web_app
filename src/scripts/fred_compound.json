@@ -1,0 +1,13 @@
+{
+  "name": "Fred Smith",
+  "age": 33,
+  "messages":
+  [
+    {
+      "message":"Hello Compound Fred 1!"
+    },
+    {
+      "message":"Hello Compound Fred 2!"
+    }
+  ]
+}

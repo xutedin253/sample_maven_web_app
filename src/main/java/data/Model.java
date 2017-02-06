@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objects.Message;
 import objects.User;
 
 /**
@@ -96,6 +97,12 @@ public class Model {
         while (rs.next())
             userid = rs.getInt(3);   // assuming 3rd column is userid
         logger.log(Level.INFO, "The new user id=" + userid);
+        // Create Messages
+        for (Message msg : usr.getMessages())
+        {
+            msg.setUserId(userid);
+            newMessage(msg);
+        }
         return userid;
     }
     
@@ -137,9 +144,66 @@ public class Model {
         logger.log(Level.INFO, "UPDATE SQL=" + sqlQuery.toString());
         return st.execute(sqlQuery.toString());
     }
-    
-    public void newMessage(User usr) throws SQLException
+
+    public Message[] getMessages() throws SQLException
     {
-        //String sqlInsert="insert into messages ("
+        LinkedList<Message> ll = new LinkedList<Message>();
+        String sqlQuery ="select * from messages;";
+        logger.log(Level.INFO, "Get messages wit sql=" + sqlQuery);
+        Statement st = createStatement();
+        ResultSet rows = st.executeQuery(sqlQuery);
+        while (rows.next())
+        {
+            logger.log(Level.INFO, "Reading row...");
+            Message msg = new Message();
+            msg.setMessageId(rows.getInt("messageid"));
+            msg.setUserId(rows.getInt("userid"));
+            msg.setMessage(rows.getString("message"));
+            msg.setDateadded(rows.getDate("dateadded"));
+            logger.log(Level.INFO, "Adding message to list with id=" + msg.getMessageId());
+            ll.add(msg);
+        }
+        logger.log(Level.INFO, "Done reading messages data...");
+        return ll.toArray(new Message[ll.size()]);
+    }
+   
+    public void deleteMessage(int messageid) throws SQLException
+    {
+        String sqlDelete="delete from messages where messageid=?";
+        PreparedStatement pst = createPreparedStatement(sqlDelete);
+        pst.setInt(1, messageid);
+        pst.execute();
+    }
+    
+    public boolean updateMessage(Message msg) throws SQLException
+    {
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("update messages ");
+        sqlQuery.append("set userid=" + msg.getUserId()+ ", ");
+        sqlQuery.append("message='" + msg.getMessage()+ "', ");
+        sqlQuery.append("dateadded='" + msg.getDateadded()+ "' ");
+        sqlQuery.append("where messageid=" + msg.getMessageId() + ";");
+        Statement st = createStatement();
+        logger.log(Level.INFO, "UPDATE SQL=" + sqlQuery.toString());
+        return st.execute(sqlQuery.toString());
+    }
+    
+    public int newMessage(Message msg) throws SQLException
+    {
+        String sqlInsert = (msg.getDateadded() != null ?
+                "insert into messages (userid, message, dateadded) values (" + msg.getUserId() + ",'" + msg.getMessage()+ "','" + msg.getDateadded().toString() + "');" :
+                "insert into messages (userid, message, dateadded) values (" + msg.getUserId() + ",'" + msg.getMessage()+ "',now());");
+                
+        Statement s = createStatement();
+        logger.log(Level.INFO, "attempting statement execute");
+        s.execute(sqlInsert,Statement.RETURN_GENERATED_KEYS);
+        logger.log(Level.INFO, "statement executed.  atempting get generated keys");
+        ResultSet rs = s.getGeneratedKeys();
+        logger.log(Level.INFO, "retrieved keys from statement");
+        int msgid = -1;
+        while (rs.next())
+            msgid = rs.getInt(1);   // assuming 1st column is msgid
+        logger.log(Level.INFO, "The new msg id=" + msgid);
+        return msgid;
     }
 }
