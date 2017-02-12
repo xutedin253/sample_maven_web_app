@@ -24,6 +24,7 @@ public class Model {
     static final Logger logger = Logger.getLogger(Model.class.getName());
     private static Model instance;
     private Connection conn;
+    private String dbConn;
     
     public static Model singleton() throws Exception {
         if (instance == null) {
@@ -33,7 +34,7 @@ public class Model {
     }
     
     Model() throws Exception
-    {
+    {  
         Class.forName("org.postgresql.Driver");
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         if ((dbUrl == null) || (dbUrl.length() < 1))
