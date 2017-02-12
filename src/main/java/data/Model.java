@@ -23,6 +23,7 @@ import objects.User;
 public class Model {
     static final Logger logger = Logger.getLogger(Model.class.getName());
     private static Model instance;
+    private static Model instancemock;
     private Connection conn;
     private String dbConn;
     
@@ -33,6 +34,14 @@ public class Model {
         return instance;
     }
     
+    public static Model mockSingleton(Connection conn) throws Exception {
+        if (instancemock == null) {
+            instancemock = new Model(conn);
+        }
+        return instancemock;
+    }
+    
+    
     Model() throws Exception
     {  
         Class.forName("org.postgresql.Driver");
@@ -42,6 +51,18 @@ public class Model {
         logger.log(Level.INFO, "dbUrl=" + dbUrl);  
         logger.log(Level.INFO, "attempting db connection");
         conn = DriverManager.getConnection(dbUrl);
+        logger.log(Level.INFO, "db connection ok.");
+    }
+    
+    Model(Connection mockconn) throws Exception
+    {  
+        Class.forName("org.postgresql.Driver");
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        if ((dbUrl == null) || (dbUrl.length() < 1))
+            dbUrl = System.getProperties().getProperty("DBCONN");
+        logger.log(Level.INFO, "dbUrl=" + dbUrl);  
+        logger.log(Level.INFO, "attempting db connection");
+        conn = mockconn;
         logger.log(Level.INFO, "db connection ok.");
     }
     
@@ -93,7 +114,7 @@ public class Model {
         logger.log(Level.INFO, "statement executed.  atempting get generated keys");
         ResultSet rs = s.getGeneratedKeys();
         logger.log(Level.INFO, "retrieved keys from statement");
-        int userid = -1;
+        int userid = -1;  
         while (rs.next())
             userid = rs.getInt(3);   // assuming 3rd column is userid
         logger.log(Level.INFO, "The new user id=" + userid);
