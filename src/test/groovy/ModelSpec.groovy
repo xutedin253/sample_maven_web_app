@@ -8,7 +8,7 @@ class ModelSpec extends spock.lang.Specification {
   def "model.newUser"() {
     given:
     def user = new User();
-    user.setName("Jake")
+    user.setName("Jake Smith")
     user.setAge(42)
     System.setProperty "DBCONN", "jdbc:postgresql://ec2-54-235-204-221.compute-1.amazonaws.com:5432/d19m0j1erhvr7v?user=wxojhmodfpbmsv&password=80cfef5defecd78ff44e5e2bab48a26b06f930d1f57e097a6be957be98358c53&sslmode=require"
     
@@ -17,14 +17,6 @@ class ModelSpec extends spock.lang.Specification {
 
     then: "check new user id"
     userid > 0
-  }
-
-  def "model.deleteUser"() {
-    when:
-    System.setProperty "DBCONN", "jdbc:postgresql://ec2-54-235-204-221.compute-1.amazonaws.com:5432/d19m0j1erhvr7v?user=wxojhmodfpbmsv&password=80cfef5defecd78ff44e5e2bab48a26b06f930d1f57e097a6be957be98358c53&sslmode=require"    
-
-    then:
     Model.singleton().deleteUser(userid)  
   }
-
 }

@@ -176,7 +176,7 @@
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>9.4-1206-jdbc42</version>
-        <scope>test</scope>        
+        <scope>runtime</scope>        
     </dependency>    
 
     </dependencies>
@@ -245,7 +245,7 @@
                    </execution>
                 </executions>
                 <configuration>
-                  <skip>true</skip>
+                  <skip>false</skip>
                 </configuration>
             </plugin>
             <plugin>
