@@ -140,7 +140,7 @@ public class UserTest {
         User instance = new User();
         instance.setUserId(userid);
         int result = instance.getUserid();
-        assertEquals(userid, result);
+        assertEquals(userid, result);  
     }
     
 }
