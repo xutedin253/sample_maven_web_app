@@ -1,7 +1,7 @@
 import objects.*;
 
 class UserSpec extends spock.lang.Specification  {
-  def "user.setName"() {
+  def "user accepts name"() {
     given:
     def user = new User();
 
@@ -12,7 +12,7 @@ class UserSpec extends spock.lang.Specification  {
     user.getName() == "Fred"
   }
 
-  def "user.setName"() {
+  def "user accepts age"() {
     given:
     def user = new User();
 

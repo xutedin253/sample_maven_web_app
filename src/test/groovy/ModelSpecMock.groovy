@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 class MockModelSpec extends spock.lang.Specification {
   
-  def "mockmodelspec.newUserMock"() {
+  def "user creation works in model w/o database"() {
    
     given:
     def userid = 0

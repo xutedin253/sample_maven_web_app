@@ -1,7 +1,7 @@
 import objects.*;
 
 class MessageSpec extends spock.lang.Specification  {
-  def "message.setMessage"() {
+  def "message accepts string"() {
     given:
     def message = Mock(Message)
     1 * message.setMessage("Hello Fred") >> null
