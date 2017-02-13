@@ -26,6 +26,7 @@ public class Model {
     private static Model instancemock;
     private Connection conn;
     private String dbConn;
+    private String dbConnUrl = System.getenv("JDBC_DATABASE_URL");
     
     public static Model singleton() throws Exception {
         if (instance == null) {
@@ -45,13 +46,19 @@ public class Model {
     Model() throws Exception
     {  
         Class.forName("org.postgresql.Driver");
-        String dbUrl = System.getenv("JDBC_DATABASE_URL");
-        if ((dbUrl == null) || (dbUrl.length() < 1))
-            dbUrl = System.getProperties().getProperty("DBCONN");
-        logger.log(Level.INFO, "dbUrl=" + dbUrl);  
+        if ((dbConnUrl == null) || (dbConnUrl.length() < 1))
+            dbConnUrl = System.getProperties().getProperty("DBCONN");
+        logger.log(Level.INFO, "dbUrl=" + dbConnUrl);  
         logger.log(Level.INFO, "attempting db connection");
-        conn = DriverManager.getConnection(dbUrl);
-        logger.log(Level.INFO, "db connection ok.");
+        try
+        {
+            conn = DriverManager.getConnection(dbConnUrl);
+            logger.log(Level.INFO, "db connection ok.");
+        }
+        catch (Exception e)
+        {
+            logger.log(Level.SEVERE, "Unable to open db connection:" + e.toString());
+        }
     }
     
     Model(Connection mockconn) throws Exception
@@ -105,6 +112,10 @@ public class Model {
         return null;
     }
     
+    public String getDBConnURL() {
+        return dbConnUrl;
+    }
+            
     public int newUser(User usr) throws SQLException
     {
         String sqlInsert="insert into users (name, age) values ('" + usr.getName() + "'" + "," + usr.getAge() + ");";
