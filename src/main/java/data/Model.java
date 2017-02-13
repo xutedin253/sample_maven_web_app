@@ -25,8 +25,7 @@ public class Model {
     private static Model instance;
     private static Model instancemock;
     private Connection conn;
-    private String dbConn;
-    private String dbConnUrl = System.getenv("JDBC_DATABASE_URL");
+    private static String dbConnUrl = System.getenv("JDBC_DATABASE_URL");
     
     public static Model singleton() throws Exception {
         if (instance == null) {
@@ -46,13 +45,11 @@ public class Model {
     Model() throws Exception
     {  
         Class.forName("org.postgresql.Driver");
-        if ((dbConnUrl == null) || (dbConnUrl.length() < 1))
-            dbConnUrl = System.getProperties().getProperty("DBCONN");
-        logger.log(Level.INFO, "dbUrl=" + dbConnUrl);  
+        logger.log(Level.INFO, "dbUrl=" + getDBConnURL());  
         logger.log(Level.INFO, "attempting db connection");
         try
         {
-            conn = DriverManager.getConnection(dbConnUrl);
+            conn = DriverManager.getConnection(getDBConnURL());
             logger.log(Level.INFO, "db connection ok.");
         }
         catch (Exception e)
@@ -64,13 +61,10 @@ public class Model {
     Model(Connection mockconn) throws Exception
     {  
         Class.forName("org.postgresql.Driver");
-        String dbUrl = System.getenv("JDBC_DATABASE_URL");
-        if ((dbUrl == null) || (dbUrl.length() < 1))
-            dbUrl = System.getProperties().getProperty("DBCONN");
-        logger.log(Level.INFO, "dbUrl=" + dbUrl);  
-        logger.log(Level.INFO, "attempting db connection");
+        logger.log(Level.INFO, "dbUrl=" + getDBConnURL());  
+        logger.log(Level.INFO, "attempting mock db connection");
         conn = mockconn;
-        logger.log(Level.INFO, "db connection ok.");
+        logger.log(Level.INFO, "mock db connection ok.");
     }
     
     private Connection getConnection()
@@ -112,8 +106,16 @@ public class Model {
         return null;
     }
     
-    public String getDBConnURL() {
+    public static String getDBConnURL() {
+        if ((dbConnUrl == null) || (dbConnUrl.length() < 1))
+            dbConnUrl = System.getProperties().getProperty("DBCONN");        
+        logger.log(Level.INFO, "dbConnUrl VALUE=" + dbConnUrl);
+        logger.log(Level.INFO, "sys-prop-getprop DBCONN VALUE=" + System.getProperties().getProperty("DBCONN"));
         return dbConnUrl;
+    }
+    
+    public static void setDBConnURL(String connUrl) {
+        dbConnUrl = connUrl;
     }
             
     public int newUser(User usr) throws SQLException
@@ -176,3 +178,4 @@ public class Model {
         //String sqlInsert="insert into messages ("
     }
 }
+
