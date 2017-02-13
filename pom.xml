@@ -274,6 +274,8 @@
                 <includes>
                  <include>**/*Spec.java</include>
                  <include>**/*Test.java</include>
+                 <include>**/*Test*.java</include>
+                 <include>**/*Suite*.java</include>
                </includes>
               </configuration>
             </plugin>

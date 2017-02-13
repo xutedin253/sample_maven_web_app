@@ -16,6 +16,8 @@ import static org.junit.Assert.*;
 
 /**
  *
+ * JUnit Test Example
+ * 
  * @author wlloyd
  */
 public class UserTest {
