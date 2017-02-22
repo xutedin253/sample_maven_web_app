@@ -66,6 +66,31 @@ public class UserService {
         sb.append("</table></body></html>");
         return sb.toString();
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getUsersJson() {
+        //TODO return proper representation object
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><body><style>table, th, td {font-family:Arial,Verdana,sans-serif;font-size:16px;padding: 0px;border-spacing: 0px;}</style><b>USERS LIST:</b><br><br><table cellpadding=10 border=1><tr><td>Name</td><td>Age</td><td>userid</td></tr>");
+        try
+        {
+            Model db = Model.singleton();
+            User[] users = db.getUsers();
+            ObjectMapper om = new ObjectMapper();
+            for (int i=0;i<users.length;i++)
+            {
+                String jsonString = om.writeValueAsString(users[i]);
+                sb.append(jsonString);
+            }
+                //sb.append("<tr><td>" + users[i].getName() + "</td><td>" + users[i].getAge() + "</td><td>" + users[i].getUserid() + "</td></tr>");
+        }
+        catch (Exception e)
+        {
+            sb.append("{\n\"error\":\"Error getting users: " + e.toString() + "\"\n}");
+        }
+        return sb.toString();
+    }    
 
     /**
      * PUT method for updating or creating an instance of GenericResource

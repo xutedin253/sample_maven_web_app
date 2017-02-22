@@ -1,6 +1,5 @@
 {
-  "messageId":2,
-  "userId": 5,
-  "message":"Hello Mr. Fred Updated",
-  "dateadded":"Wed, 8 Feb 2017 01:15:22 PST"
+  "messageid":2,
+  "userid": 1,
+  "message":"Hello Patrick, testing your service..."
 }

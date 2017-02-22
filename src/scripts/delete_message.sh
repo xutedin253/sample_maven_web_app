@@ -1,8 +1,9 @@
 #ENDPOINT=https://glacial-anchorage-84282.herokuapp.com/tcss360/users
+ENDPOINT=https://tranquil-fjord-71981.herokuapp.com/tcss360/messages
 # heroku
 #ENDPOINT=https://frozen-temple-15527.herokuapp.com/tcss360/users
 # local web runner deploy
-ENDPOINT=http://localhost:8080/tcss360/Messages
+#ENDPOINT=http://localhost:8080/tcss360/Messages
 # net beans deploy
 #ENDPOINT=http://localhost:8084/sample_maven_web_app/tcss360/users
 # manual deploy
