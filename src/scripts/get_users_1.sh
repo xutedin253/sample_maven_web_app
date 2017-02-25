@@ -1,5 +1,5 @@
-#ENDPOINT=https://glacial-anchorage-84282.herokuapp.com/tcss360/users
-ENDPOINT=http://localhost:8080/tcss360/users/2
+ENDPOINT=https://glacial-anchorage-84282.herokuapp.com/tcss360/users/10
+#ENDPOINT=http://localhost:8080/tcss360/users/2
 # local web runner deploy
 #ENDPOINT=http://localhost:8080/tcss360/users
 # net beans deploy

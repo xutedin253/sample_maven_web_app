@@ -30,6 +30,9 @@ import org.codehaus.jettison.json.JSONObject;
 
 /**
  * REST Web Service
+ * 
+ * By adding the JSON dependency jersey-media-json-jackson, methods responsible
+ * for returning APPLICATION_JSON can return lists of objects (users) directly.
  *
  * @author wlloyd
  */
@@ -49,6 +52,7 @@ public class UserService {
 
     /**
      * Retrieves representation of an instance of services.GenericResource
+     * @deprecated former get method that returned HTML output
      * @return an instance of java.lang.String
      */
 //    @GET
@@ -88,36 +92,14 @@ public class UserService {
                     lusers.add(users[i]);
             else
                 lusers.add(users[0]);
-            
-//            JSONArray ja = new JSONArray();
-//            if (userid == 0)
-//                for (int i=0;i<users.length;i++)
-//                {
-//                    JSONObject obj = new JSONObject(om.writeValueAsString(users[i]));  
-//                    ja.put(obj);
-//                }
-//            else
-//            {
-//                JSONObject obj = new JSONObject(om.writeValueAsString(users[userid]));  
-//                ja.put(obj);
-//            }
             logger.log(Level.INFO, "Received request to fetch user id=" + userid);
-            //return ja.toString();
             return lusers;
         }
         catch (Exception e)
         {
             JSONObject obj = new JSONObject();
-//            try {
-                //obj.put("error","Error getting users:" + e.toString());
                 logger.log(Level.WARNING, "Error getting users:" + e.toString());
                 return null;
-//            }
-//            catch (JSONException je)
-//            {
-//                logger.log(Level.SEVERE, "Unable to generate json object to report error to caller.");
-//                return null;
-//            }
         }
     }    
 
