@@ -118,7 +118,7 @@ public class Model {
         dbConnUrl = connUrl;
     }
             
-    public int newUser(User usr) throws SQLException
+    public User newUser(User usr) throws SQLException
     {
         String sqlInsert="insert into users (name, age) values ('" + usr.getName() + "'" + "," + usr.getAge() + ");";
         Statement s = createStatement();
@@ -131,7 +131,8 @@ public class Model {
         while (rs.next())
             userid = rs.getInt(3);   // assuming 3rd column is userid
         logger.log(Level.INFO, "The new user id=" + userid);
-        return userid;
+        usr.setUserId(userid);
+        return usr;
     }
     
     public void deleteUser(int userid) throws SQLException
@@ -142,10 +143,11 @@ public class Model {
         pst.execute();
     }
     
-    public User[] getUsers() throws SQLException
+    public User[] getUsers(int userId) throws SQLException
     {
         LinkedList<User> ll = new LinkedList<User>();
-        String sqlQuery ="select * from users;";
+        String sqlQuery ="select * from users";
+        sqlQuery += (userId > 0) ? " where userid=" + userId + " order by userid;" : " order by userid;";
         Statement st = createStatement();
         ResultSet rows = st.executeQuery(sqlQuery);
         while (rows.next())

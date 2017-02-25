@@ -9,7 +9,7 @@ class MockModelSpec extends spock.lang.Specification {
   def "user creation works in model w/o database"() {
    
     given:
-    def userid = 0
+    def userid
     def resultSet = makeResultSet(
     ["userid", "name"  , "age"    ],
     [  1 , "Fred", 35]
@@ -34,7 +34,14 @@ class MockModelSpec extends spock.lang.Specification {
     userid = Model.mockSingleton(mockConnection).newUser(user)
 
     then: "check new user id"
-    userid > 0
+    userid.toString().length() > 0
+    userid.getUserid() > 0
+    userid.getUserid().equals(1)
+    userid.getName().equals("Jake Smith")
+    println "\n\n\n\n\n"
+    println userid.toString()
+    println userid.getUserid()
+    println userid.getName()
     //Model.singleton().deleteUser(userid)  
     
   }

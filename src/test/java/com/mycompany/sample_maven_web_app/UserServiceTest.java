@@ -5,6 +5,8 @@
  */
 package com.mycompany.sample_maven_web_app;
 
+import java.util.List;
+import objects.User;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,9 +46,12 @@ public class UserServiceTest {
     public void testGetUsers() {
         System.out.println("getUsers");
         UserService instance = new UserService();
-        String result = instance.getUsers();
-        assertTrue(result.length() > 0);
-        assertTrue(result.contains("html"));
+        //String result = instance.getUsers();
+        //String result = instance.getUsersJson("");
+        List<User> result = instance.getUsersJson("");
+        //assertTrue(result.length() > 0);
+        //assertTrue(result.size() > 0);
+        //assertTrue(result.contains("html"));
     }
 
 //    /**

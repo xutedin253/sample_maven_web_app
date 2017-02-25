@@ -16,12 +16,17 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
+import javax.ws.rs.PathParam;
 import objects.User;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 /**
  * REST Web Service
@@ -46,26 +51,75 @@ public class UserService {
      * Retrieves representation of an instance of services.GenericResource
      * @return an instance of java.lang.String
      */
+//    @GET
+//    @Produces(MediaType.TEXT_HTML)
+//    public String getUsers() {
+//        //TODO return proper representation object
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("<html><body><style>table, th, td {font-family:Arial,Verdana,sans-serif;font-size:16px;padding: 0px;border-spacing: 0px;}</style><b>USERS LIST:</b><br><br><table cellpadding=10 border=1><tr><td>Name</td><td>Age</td><td>userid</td></tr>");
+//        try
+//        {
+//            Model db = Model.singleton();
+//            User[] users = db.getUsers();
+//            for (int i=0;i<users.length;i++)
+//                sb.append("<tr><td>" + users[i].getName() + "</td><td>" + users[i].getAge() + "</td><td>" + users[i].getUserid() + "</td></tr>");
+//        }
+//        catch (Exception e)
+//        {
+//            sb.append("</table><br>Error getting users: " + e.toString() + "<br>");
+//        }
+//        sb.append("</table></body></html>");
+//        return sb.toString();
+//    }
+    
     @GET
-    @Produces(MediaType.TEXT_HTML)
-    public String getUsers() {
-        //TODO return proper representation object
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html><body><style>table, th, td {font-family:Arial,Verdana,sans-serif;font-size:16px;padding: 0px;border-spacing: 0px;}</style><b>USERS LIST:</b><br><br><table cellpadding=10 border=1><tr><td>Name</td><td>Age</td><td>userid</td></tr>");
+    @Path("{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<User> getUsersJson(@PathParam("userid") String id) {
+        LinkedList<User> lusers = new LinkedList<User>();
+     
         try
         {
+            int userid = Integer.parseInt(id);
             Model db = Model.singleton();
-            User[] users = db.getUsers();
-            for (int i=0;i<users.length;i++)
-                sb.append("<tr><td>" + users[i].getName() + "</td><td>" + users[i].getAge() + "</td><td>" + users[i].getUserid() + "</td></tr>");
+            User[] users = db.getUsers(userid);
+            if (userid ==0)
+                for (int i=0;i<users.length;i++)
+                    lusers.add(users[i]);
+            else
+                lusers.add(users[0]);
+            
+//            JSONArray ja = new JSONArray();
+//            if (userid == 0)
+//                for (int i=0;i<users.length;i++)
+//                {
+//                    JSONObject obj = new JSONObject(om.writeValueAsString(users[i]));  
+//                    ja.put(obj);
+//                }
+//            else
+//            {
+//                JSONObject obj = new JSONObject(om.writeValueAsString(users[userid]));  
+//                ja.put(obj);
+//            }
+            logger.log(Level.INFO, "Received request to fetch user id=" + userid);
+            //return ja.toString();
+            return lusers;
         }
         catch (Exception e)
         {
-            sb.append("</table><br>Error getting users: " + e.toString() + "<br>");
+            JSONObject obj = new JSONObject();
+//            try {
+                //obj.put("error","Error getting users:" + e.toString());
+                logger.log(Level.WARNING, "Error getting users:" + e.toString());
+                return null;
+//            }
+//            catch (JSONException je)
+//            {
+//                logger.log(Level.SEVERE, "Unable to generate json object to report error to caller.");
+//                return null;
+//            }
         }
-        sb.append("</table></body></html>");
-        return sb.toString();
-    }
+    }    
 
     /**
      * PUT method for updating or creating an instance of GenericResource
@@ -76,6 +130,9 @@ public class UserService {
     @Consumes(MediaType.APPLICATION_JSON)
     public String updateUser(String jobj) throws IOException
     {
+        logger.log(Level.INFO, "RECEIVED UPDATE REQUEST FOR:\n");
+        logger.log(Level.INFO, "OBJECT:" + jobj + "\n");
+        
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.readValue(jobj.toString(), User.class);
         StringBuilder text = new StringBuilder();
@@ -105,6 +162,8 @@ public class UserService {
     @Consumes(MediaType.APPLICATION_JSON)
     public String deleteUser(String jobj) throws IOException
     {
+        logger.log(Level.INFO, "RECEIVED DELETE REQUEST FOR:\n");
+        logger.log(Level.INFO, "OBJECT:" + jobj + "\n");
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.readValue(jobj.toString(), User.class);
         StringBuilder text = new StringBuilder();
@@ -130,9 +189,14 @@ public class UserService {
     }
     
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createUser(String jobj) throws IOException {
+    public List<User> createUser(String jobj) throws IOException {
+        logger.log(Level.INFO, "RECEIVED CREATE REQUEST FOR:\n");
+        logger.log(Level.INFO, "OBJECT:" + jobj + "\n");
+        
+        LinkedList<User> lusers = new LinkedList<User>();
+
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.readValue(jobj.toString(), User.class);
         
@@ -141,14 +205,16 @@ public class UserService {
         text.append("Hello " + user.getName() + "\n");
         text.append("You're only " + user.getAge() + " years old.\n");
         text.append("Messages:\n");
-        for (Object msg : user.getMessages())
-            text.append(msg.toString() + "\n");
+        if (user.getMessages() != null)
+            for (Object msg : user.getMessages())
+                text.append(msg.toString() + "\n");
         
         try {
             Model db = Model.singleton();
-            int userid = db.newUser(user);
-            logger.log(Level.INFO, "user persisted to db as userid=" + userid);
-            text.append("User id persisted with id=" + userid);
+            User usr = db.newUser(user);
+            logger.log(Level.INFO, "user persisted to db as userid=" + usr.getUserid());
+            text.append("User id persisted with id=" + usr.getUserid());
+            lusers.add(usr);
         }
         catch (SQLException sqle)
         {
@@ -161,8 +227,7 @@ public class UserService {
             logger.log(Level.SEVERE, "Error connecting to db.");
         }
         
-        
-        return text.toString();
+        return lusers;
     }
 }
 

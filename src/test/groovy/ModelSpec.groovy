@@ -35,7 +35,10 @@ class ModelSpec extends spock.lang.Specification {
       userid = Model.singleton().newUser(usr)
 
       then: "check new user id"
-      userid > 0
+      userid.toString().length() > 0
+      userid.getUserid() > 0
+      userid.getName().equals("Jake Smith")
+      
       notThrown(SQLException)
       Model.singleton().deleteUser(userid)  
   }
