@@ -53,6 +53,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>    
     <script language="javascript">
     $(document).ready(function () { 
+        var old_userid = document.getElementById("userid").value;
         
         // Get-Data Click function
         //
@@ -68,6 +69,19 @@
             datatype: 'json',
             success: render_form
           });        
+        });
+
+        $('#userid').focusin(function () {
+            old_userid = document.getElementById("userid").value;    
+        });
+
+        // If the user exits the userid textbox and places focus on another
+        // GUI control on the screen, and if the user id had changed since
+        // the user entered the box, then reload the user form
+        $('#userid').focusout(function () {
+            var curr_userid = document.getElementById("userid").value;    
+            if (curr_userid != old_userid)
+                getuser();
         });
         
         // Delete-User Click function
@@ -161,6 +175,7 @@
         // Empty first time as the td has no text until clicked.
         $(".table-body").on('click', 'tr', function() {
             var clicked_userid=$(this).find('td:first').text();
+            old_userid = clicked_userid;
             var url='tcss360/users/'+clicked_userid;
              $.ajax({
                type: 'GET',
@@ -205,6 +220,21 @@
           success: render
         }); 
     }
+    
+    // gets and displays users by calling render
+    function getuser() {
+        // Form load
+        var showData = $('#show-data');
+        var userid = document.getElementById("userid");
+        var url='tcss360/users/' + userid.value;
+
+        $.ajax({
+          type: 'GET',
+          url: url,
+          datatype: 'json',
+          success: render
+        }); 
+    }    
     
     // renders the user table
     function render(data)  {
