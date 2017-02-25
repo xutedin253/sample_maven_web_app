@@ -209,7 +209,8 @@
     // gets and displays users by calling render
     function getuser() {
         // Form load
-        var userid = document.getElementById("userid"); 
+        //var userid = document.getElementById("userid"); 
+        var userid = $('#userid').val()
         var url='tcss360/users/' + userid.value;
 
         $.ajax({
