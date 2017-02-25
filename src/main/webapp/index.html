@@ -2,6 +2,7 @@
 <html>
   <head>
     <style>
+        <!-- inline style sheet -->
         #myform{
             border: 1px solid black;
             border-collapse: collapse;
@@ -47,13 +48,15 @@
           padding-left: 20px;    
         }
     </style>
-    <title></title>
+    <title>User Editor</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>    
     <script language="javascript">
     $(document).ready(function () { 
         
-        // Click function
+        // Get-Data Click function
+        //
+        // Calls the GET service to lookup a currently entered userid
         $('#get-data').click(function () 
         {
           var userid = document.getElementById("userid");
@@ -67,6 +70,9 @@
           });        
         });
         
+        // Delete-User Click function
+        //
+        // Calls the DELETE service to delete the selected user
         $('#delete-user').click(function ()
         {
            var userid = document.getElementById("userid");
@@ -80,11 +86,14 @@
                datatype: 'json',
                data: JSON.stringify(user),
                contentType: 'application/json',
-               success: render_clear
+               success: render_delete
              }); 
            } 
         });
         
+        // New-User Click function
+        //
+        // Clears the form to allow entry of a new user record
         $('#new-user').click(function ()
         {
            document.getElementById("userid").disabled = true;
@@ -92,6 +101,10 @@
            document.getElementById("age").value = "";
         });        
 
+        // Save-User Click function
+        //
+        // If a new user, calls the POST to create a new user
+        // If an existing user, call the PUT to update the user
         $('#save-user').click(function ()
         {
             if (document.getElementById("userid").disabled)
@@ -136,13 +149,18 @@
             }
         });
         
-        //alert( 'Clicked row '+ ($(this).index()+1) );
-        //Use .text() as td doesn't have method .val()
-        //Empty first time as the td has no text until clicked.
-        //alert( $(this).find('td:first').text() );
+        // Dynamic table event handler
+        // 
+        // Gets the selected user row from the database and puts it
+        // display the user in the form.  Note, technically we could just
+        // read the static table content but this approach would allow
+        // you to read the entire user record including fields which may
+        // not be displayed in the HTML table.
+        // 
+        // Use .text() as td doesn't have method .val()
+        // Empty first time as the td has no text until clicked.
         $(".table-body").on('click', 'tr', function() {
             var clicked_userid=$(this).find('td:first').text();
-            //$(this).find('td:first').text('clicked');
             var url='tcss360/users/'+clicked_userid;
              $.ajax({
                type: 'GET',
@@ -152,28 +170,28 @@
              });        
          });
          
-        // Row click event handler
-        //$('#show-data').click(function () 
-        $('#table').on('click', 'tr', function ()
-        {
-           document.getElementById("userid").disabled = false;           
-           var rowid=this.id;
-           alert(rowid);
-           var url='tcss360/users/'+rowid;
-           $.ajax({
-             type: 'GET',
-             url: url,
-             datatype: 'json',
-             success: render_form
-          });        
-           
-        });
+//        // Row click event handler
+//        //$('#show-data').click(function () 
+//        $('#table').on('click', 'tr', function ()
+//        {
+//           document.getElementById("userid").disabled = false;           
+//           var rowid=this.id;
+//           alert(rowid);
+//           var url='tcss360/users/'+rowid;
+//           $.ajax({
+//             type: 'GET',
+//             url: url,
+//             datatype: 'json',
+//             success: render_form
+//          });        
+//        });
         
-        // get and display users
+        // get and display users when the form is first loaded
         getusers();
         
     } );
 
+    // gets and displays users by calling render
     function getusers() {
         // Form load
         var showData = $('#show-data');
@@ -188,6 +206,7 @@
         }); 
     }
     
+    // renders the user table
     function render(data)  {
       $.each(data, function(index, user) { 
           var newrow = "<tr><td id=\"userid\"" + index + "\">"+ user.userid + "</td>";
@@ -197,12 +216,22 @@
       });
     }
     
+    // clears the table, reloads the users
     function render_clear(data)
     {
         $('#mybody').empty();
         getusers();
     }
     
+    // clears the table, reloads the users, clears the user id textbox
+    function render_delete(data)
+    {
+        $('#mybody').empty();
+        getusers();
+        document.getElementById("userid").value = "";
+    }
+    
+    // display the userid of a newly created user as supplied from the service
     function render_newuser(data)
     {
         $.each(data, function(index, user) { 
@@ -213,6 +242,7 @@
         getusers();
     }
     
+    // displays a selected user in the form
     function render_form(data)  {
       var list = data;
       $.each(list, function(index, user) { 
@@ -221,7 +251,6 @@
           $('#age').val(user.age);
       });
     }    
-    
   </script>
   </head>
   <body  onload="">
