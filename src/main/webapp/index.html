@@ -1,10 +1,267 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-    <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+  <head>
+    <style>
+        #myform{
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-right: 20px;
+            padding-left: 20px;
+            font-family: sans-serif;
+        }
+        #mytable {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-right: 20px;
+            padding-left: 20px;
+            font-family: sans-serif;
+        }
+        div {
+            font-family: sans-serif;
+            font-size: xx-large;
+            font-weight: bold;
+        }
+        .table-header {
+          background-color: yellow;
+          border: 1px solid black;
+        }
+        .userid {
+          width: 60px;
+        }
+        .name {
+          width: 200px;
+        }
+        .age {
+          width: 20px;
+        }
+        th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          padding-right: 20px;
+          padding-left: 20px;    
+        }
+    </style>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>    
+    <script language="javascript">
+    $(document).ready(function () { 
+        
+        // Click function
+        $('#get-data').click(function () 
+        {
+          var userid = document.getElementById("userid");
+          var url='http://localhost:8080/tcss360/users/'+userid.value;
+
+          $.ajax({
+            type: 'GET',
+            url: url,
+            datatype: 'json',
+            success: render_form
+          });        
+        });
+        
+        $('#delete-user').click(function ()
+        {
+           var userid = document.getElementById("userid");
+           var username = document.getElementById("name");
+           var user = { 'userid': userid.value };           
+           var url='http://localhost:8080/tcss360/users/';
+           if (confirm('Are you sure - DELETE ' + username.value + '-(' + userid.value + ') ?')) {
+             $.ajax({
+               type: 'DELETE',
+               url: url,
+               datatype: 'json',
+               data: JSON.stringify(user),
+               contentType: 'application/json',
+               success: render_clear
+             }); 
+           } 
+        });
+        
+        $('#new-user').click(function ()
+        {
+           document.getElementById("userid").disabled = true;
+           document.getElementById("name").value = "";
+           document.getElementById("age").value = "";
+        });        
+
+        $('#save-user').click(function ()
+        {
+            if (document.getElementById("userid").disabled)
+            {
+                // Create a new record
+                var username = document.getElementById("name");
+                var age = document.getElementById("age");
+                var user = { 'name': username.value,
+                             'age': age.value };           
+                var url='http://localhost:8080/tcss360/users/';
+                if (confirm('Are you sure - CREATE ' + username.value + ' ?')) {
+                  $.ajax({
+                    type: 'POST',
+                    url: url,
+                    datatype: 'json',
+                    data: JSON.stringify(user),
+                    contentType: 'application/json',
+                    success: render_newuser
+                  }); 
+                }                 
+            }
+            else
+            {
+                // Update an existing record
+                var userid = document.getElementById("userid");
+                var username = document.getElementById("name");
+                var age = document.getElementById("age");
+                var user = { 'userid': userid.value,
+                             'name': username.value,
+                             'age': age.value };           
+                var url='http://localhost:8080/tcss360/users/';
+                if (confirm('Are you sure - UPDATE ' + username.value + ' ?')) {
+                  $.ajax({
+                    type: 'PUT',
+                    url: url,
+                    datatype: 'json',
+                    data: JSON.stringify(user),
+                    contentType: 'application/json',
+                    success: render_clear
+                  }); 
+                }                 
+            }
+        });
+        
+        //alert( 'Clicked row '+ ($(this).index()+1) );
+        //Use .text() as td doesn't have method .val()
+        //Empty first time as the td has no text until clicked.
+        //alert( $(this).find('td:first').text() );
+        $(".table-body").on('click', 'tr', function() {
+            var clicked_userid=$(this).find('td:first').text();
+            //$(this).find('td:first').text('clicked');
+            var url='http://localhost:8080/tcss360/users/'+clicked_userid;
+             $.ajax({
+               type: 'GET',
+               url: url,
+               datatype: 'json',
+               success: render_form
+             });        
+         });
+         
+        // Row click event handler
+        //$('#show-data').click(function () 
+        $('#table').on('click', 'tr', function ()
+        {
+           document.getElementById("userid").disabled = false;           
+           var rowid=this.id;
+           alert(rowid);
+           var url='http://localhost:8080/tcss360/users/'+rowid;
+           $.ajax({
+             type: 'GET',
+             url: url,
+             datatype: 'json',
+             success: render_form
+          });        
+           
+        });
+        
+        // get and display users
+        getusers();
+        
+    } );
+
+    function getusers() {
+        // Form load
+        var showData = $('#show-data');
+        var userid = document.getElementById("userid");
+        var url='http://localhost:8080/tcss360/users/0';
+
+        $.ajax({
+          type: 'GET',
+          url: url,
+          datatype: 'json',
+          success: render
+        }); 
+    }
+    
+    function render(data)  {
+      $.each(data, function(index, user) { 
+          var newrow = "<tr><td id=\"userid\"" + index + "\">"+ user.userid + "</td>";
+          newrow += "<td id=\"name\">" + user.name + "</td>";
+          newrow += "<td id=\"age\">" + user.age + "</td></tr>";
+          $('#mybody').append(newrow);
+      });
+    }
+    
+    function render_clear(data)
+    {
+        $('#mybody').empty();
+        getusers();
+    }
+    
+    function render_newuser(data)
+    {
+        $.each(data, function(index, user) { 
+          document.getElementById("userid").value = user.userid;
+        });
+        document.getElementById("userid").disabled = false;
+        $('#mybody').empty();
+        getusers();
+    }
+    
+    function render_form(data)  {
+      var list = data;
+      $.each(list, function(index, user) { 
+          $('#userid').val(user.userid);
+          $('#name').val(user.name);
+          $('#age').val(user.age);
+      });
+    }    
+    
+  </script>
+  </head>
+  <body  onload="">
+   <div id="title">
+   User Editor - Sample Maven Web App
+   </div>
+   <br>
+   <table id="myform">
+   <tr>
+       <td>
+           <input type="button" value="Get User" onclick="" id="get-data"/>
+           <input type="button" value="New User" onclick="" id="new-user"/>
+           <input type="button" value="Save User" onclick="" id="save-user"/>
+           <input type="button" value="Delete User" onclick="" id="delete-user"/>
+       </td>        
+   </tr>
+   <tr>
+       <td>Enter User ID :  </td>
+       <td><input type="text" id="userid" size="10"/>  
+   </tr>
+   <tr>
+       <td>Enter User Name :  </td>
+       <td><input type="text" id="name" size="20"/> </td>
+   </tr>
+   <tr>
+       <td>User Age : </td>
+       <td><input type="text" id="age" size="10"/> </td>
+   </tr>
+   </table>
+   <br>
+   <table id="mytable" class="table">
+           <thead>
+             <tr class="table-header">
+                 <td class="userid">User Id</td>
+                 <td class="name">Name</td>
+                 <td class="age">Age</td>
+             </tr>               
+           </thead>
+           <tbody id="mybody" class="table-body">
+           </tbody>
+   </table>
+  </body>
 </html>
