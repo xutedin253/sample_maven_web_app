@@ -80,6 +80,7 @@
         // the user entered the box, then reload the user form
         $('#userid').focusout(function () {
             var curr_userid = document.getElementById("userid").value;    
+            //alert(curr_userid + '---' + old_userid)
             if (curr_userid != old_userid)
                 getuser();
         });
@@ -185,21 +186,7 @@
              });        
          });
          
-//        // Row click event handler
-//        //$('#show-data').click(function () 
-//        $('#table').on('click', 'tr', function ()
-//        {
-//           document.getElementById("userid").disabled = false;           
-//           var rowid=this.id;
-//           alert(rowid);
-//           var url='tcss360/users/'+rowid;
-//           $.ajax({
-//             type: 'GET',
-//             url: url,
-//             datatype: 'json',
-//             success: render_form
-//          });        
-//        });
+
         
         // get and display users when the form is first loaded
         getusers();
@@ -209,8 +196,6 @@
     // gets and displays users by calling render
     function getusers() {
         // Form load
-        var showData = $('#show-data');
-        var userid = document.getElementById("userid");
         var url='tcss360/users/0';
 
         $.ajax({
@@ -224,8 +209,7 @@
     // gets and displays users by calling render
     function getuser() {
         // Form load
-        var showData = $('#show-data');
-        var userid = document.getElementById("userid");
+        var userid = document.getElementById("userid"); 
         var url='tcss360/users/' + userid.value;
 
         $.ajax({
