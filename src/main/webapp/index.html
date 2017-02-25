@@ -57,7 +57,7 @@
         $('#get-data').click(function () 
         {
           var userid = document.getElementById("userid");
-          var url='http://localhost:8080/tcss360/users/'+userid.value;
+          var url='tcss360/users/'+userid.value;
 
           $.ajax({
             type: 'GET',
@@ -72,7 +72,7 @@
            var userid = document.getElementById("userid");
            var username = document.getElementById("name");
            var user = { 'userid': userid.value };           
-           var url='http://localhost:8080/tcss360/users/';
+           var url='tcss360/users/';
            if (confirm('Are you sure - DELETE ' + username.value + '-(' + userid.value + ') ?')) {
              $.ajax({
                type: 'DELETE',
@@ -101,7 +101,7 @@
                 var age = document.getElementById("age");
                 var user = { 'name': username.value,
                              'age': age.value };           
-                var url='http://localhost:8080/tcss360/users/';
+                var url='tcss360/users/';
                 if (confirm('Are you sure - CREATE ' + username.value + ' ?')) {
                   $.ajax({
                     type: 'POST',
@@ -122,7 +122,7 @@
                 var user = { 'userid': userid.value,
                              'name': username.value,
                              'age': age.value };           
-                var url='http://localhost:8080/tcss360/users/';
+                var url='tcss360/users/';
                 if (confirm('Are you sure - UPDATE ' + username.value + ' ?')) {
                   $.ajax({
                     type: 'PUT',
@@ -143,7 +143,7 @@
         $(".table-body").on('click', 'tr', function() {
             var clicked_userid=$(this).find('td:first').text();
             //$(this).find('td:first').text('clicked');
-            var url='http://localhost:8080/tcss360/users/'+clicked_userid;
+            var url='tcss360/users/'+clicked_userid;
              $.ajax({
                type: 'GET',
                url: url,
@@ -159,7 +159,7 @@
            document.getElementById("userid").disabled = false;           
            var rowid=this.id;
            alert(rowid);
-           var url='http://localhost:8080/tcss360/users/'+rowid;
+           var url='tcss360/users/'+rowid;
            $.ajax({
              type: 'GET',
              url: url,
@@ -178,7 +178,7 @@
         // Form load
         var showData = $('#show-data');
         var userid = document.getElementById("userid");
-        var url='http://localhost:8080/tcss360/users/0';
+        var url='tcss360/users/0';
 
         $.ajax({
           type: 'GET',
