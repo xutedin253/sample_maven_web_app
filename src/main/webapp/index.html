@@ -209,15 +209,14 @@
     // gets and displays users by calling render
     function getuser() {
         // Form load
-        //var userid = document.getElementById("userid"); 
-        var userid = $('#userid').val()
+        var userid = document.getElementById("userid"); 
         var url='tcss360/users/' + userid.value;
 
         $.ajax({
           type: 'GET',
           url: url,
           datatype: 'json',
-          success: render
+          success: render_form
         }); 
     }    
     
@@ -260,11 +259,17 @@
     // displays a selected user in the form
     function render_form(data)  {
       var list = data;
-      $.each(list, function(index, user) { 
-          $('#userid').val(user.userid);
-          $('#name').val(user.name);
-          $('#age').val(user.age);
-      });
+      if (list)
+        $.each(list, function(index, user) { 
+            $('#userid').val(user.userid);
+            $('#name').val(user.name);
+            $('#age').val(user.age);
+        });
+      else
+      {
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+      }
     }    
   </script>
   </head>
