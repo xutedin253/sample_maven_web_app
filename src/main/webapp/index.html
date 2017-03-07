@@ -60,7 +60,7 @@
         // Calls the GET service to lookup a currently entered userid
         $('#get-Message').click(function () 
         {
-          var userid = document.getElementById("messageid");
+          var messageid = document.getElementById("messageid");
           var url='tcss360/Messages/'+messageid.value;
 
           $.ajax({
@@ -90,8 +90,8 @@
         // Calls the DELETE service to delete the selected user
         $('#delete-Message').click(function ()
         {
+           var messageid = document.getElementById("messageid");
            var userid = document.getElementById("userid");
-           var username = document.getElementById("name");
            var message = { 'messageid': messageid.value };           
            var url='tcss360/Messages/';
            if (confirm('Are you sure - DELETE ' + messageid.value + '-(' + userid.value + ') ?')) {
@@ -99,7 +99,7 @@
                type: 'DELETE',
                url: url,
                datatype: 'json',
-               data: JSON.stringify(user),
+               data: JSON.stringify(message),
                contentType: 'application/json',
                success: render_delete
              }); 
