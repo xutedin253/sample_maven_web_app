@@ -186,15 +186,15 @@ public class Model {
     {
         LinkedList<Message> ll = new LinkedList<Message>();
         String sqlQuery ="select * from messages";
-//        sqlQuery += (messageId > 0) ? " where messageid=" + messageId + " order by messageid;" : " order by message;";
+        sqlQuery += (messageId > 0) ? " where messageid=" + messageId + " order by messageid;" : " order by message;";
         Statement st = createStatement();
         ResultSet rows = st.executeQuery(sqlQuery);
         while (rows.next())
         {
             logger.log(Level.INFO, "Reading row...");
             Message msg = new Message();
-            msg.setMessageId(rows.getInt("messageId"));
-            msg.setUserId(rows.getInt("userId"));
+            msg.setMessageId(rows.getInt("messageid"));
+            msg.setUserId(rows.getInt("userid"));
             msg.setMessage(rows.getString("message"));
             msg.setDateadded(rows.getDate("dateadded"));
             logger.log(Level.INFO, "Adding user to list with id=" + msg.getMessageId());
