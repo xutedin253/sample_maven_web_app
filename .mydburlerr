@@ -1,3 +1,2 @@
-Running echo $JDBC_DATABASE_URL on glacial-anchorage-84282... starting, run.8792 (Free)
-Running echo $JDBC_DATABASE_URL on glacial-anchorage-84282... connecting, run.8792 (Free)
-Running echo $JDBC_DATABASE_URL on glacial-anchorage-84282... up, run.8792 (Free)
+Running echo $JDBC_DATABASE_URL on protected-refuge-41818... !
+ ▸    ENOTFOUND: getaddrinfo ENOTFOUND api.heroku.com api.heroku.com:443
