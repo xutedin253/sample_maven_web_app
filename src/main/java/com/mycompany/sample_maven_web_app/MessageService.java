@@ -42,9 +42,9 @@ public class MessageService {
     }
     
     @GET
-    @Path("{messageid}")
+    @Path("{messageId}")
     @Produces(MediaType.TEXT_HTML)
-    public List<Message> getMessages(@PathParam("messageid") String id) {
+    public List<Message> getMessages(@PathParam("messageId") String id) {
         LinkedList<Message> messageList = new LinkedList<Message>();
      
         try

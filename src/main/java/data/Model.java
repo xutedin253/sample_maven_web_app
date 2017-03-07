@@ -186,7 +186,7 @@ public class Model {
     {
         LinkedList<Message> ll = new LinkedList<Message>();
         String sqlQuery ="select * from messages";
-        sqlQuery += (messageId > 0) ? " where messageid=" + messageId + " order by messageid;" : " order by message;";
+//        sqlQuery += (messageId > 0) ? " where messageid=" + messageId + " order by messageid;" : " order by message;";
         Statement st = createStatement();
         ResultSet rows = st.executeQuery(sqlQuery);
         while (rows.next())
