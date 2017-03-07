@@ -50,7 +50,7 @@ public class MessageService {
         try
         {
             int messageid = Integer.parseInt(id);
-            ModelMessages db = ModelMessages.singleton();
+            Model db = Model.singleton();
             Message[] messages = db.getMessages(messageid);
             if (messageid == 0)
                 for (int i=0;i<messages.length;i++)
@@ -93,7 +93,7 @@ public class MessageService {
         Message msg = mapper.readValue(jobj.toString(), Message.class);
         StringBuilder text = new StringBuilder();
         try {
-            ModelMessages db = ModelMessages.singleton();
+            Model db = Model.singleton();
             int messageid = msg.getMessageId();
             db.updateMessage(msg);
             logger.log(Level.INFO, "update msg with messageid=" + messageid);
@@ -122,7 +122,7 @@ public class MessageService {
         Message msg = mapper.readValue(jobj.toString(), Message.class);
         StringBuilder text = new StringBuilder();
         try {
-            ModelMessages db = ModelMessages.singleton();
+            Model db = Model.singleton();
             int messageid = msg.getMessageId();
             db.deleteMessage(messageid);
             logger.log(Level.INFO, "message deleted from db=" + messageid);
@@ -152,7 +152,7 @@ public class MessageService {
         StringBuilder text = new StringBuilder();
         
         try {
-            ModelMessages db = ModelMessages.singleton();
+            Model db = Model.singleton();
             int msgid = db.newMessage(msg);
             logger.log(Level.INFO, "msg persisted to db with msgid=" + msgid);
             text.append("Msg id persisted with id=" + msgid);

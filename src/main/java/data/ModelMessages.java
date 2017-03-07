@@ -87,7 +87,7 @@ public class ModelMessages {
     public Message[] getMessages(int messageId) throws SQLException
     {
         LinkedList<Message> ll = new LinkedList<Message>();
-        String sqlQuery ="select * from messages;";
+        String sqlQuery ="select * from messages";
         sqlQuery += (messageId > 0) ? " where messageid=" + messageId + " order by messageid;" : " order by message;";
         Statement st = createStatement();
         ResultSet rows = st.executeQuery(sqlQuery);
@@ -95,14 +95,13 @@ public class ModelMessages {
         {
             logger.log(Level.INFO, "Reading row...");
             Message msg = new Message();
-            msg.setMessageId(rows.getInt("messageid"));
-            msg.setUserId(rows.getInt("userid"));
+            msg.setMessageId(rows.getInt("messageId"));
+            msg.setUserId(rows.getInt("userId"));
             msg.setMessage(rows.getString("message"));
             msg.setDateadded(rows.getDate("dateadded"));
-            logger.log(Level.INFO, "Adding message to list with id=" + msg.getMessageId());
+            logger.log(Level.INFO, "Adding user to list with id=" + msg.getMessageId());
             ll.add(msg);
         }
-        logger.log(Level.INFO, "Done reading messages data...");
         return ll.toArray(new Message[ll.size()]);
     }
    
@@ -116,12 +115,11 @@ public class ModelMessages {
     
     public boolean updateMessage(Message msg) throws SQLException
     {
-        StringBuilder sqlQuery = new StringBuilder();
+       StringBuilder sqlQuery = new StringBuilder();
         sqlQuery.append("update messages ");
-        sqlQuery.append("set userid=" + msg.getUserId()+ ", ");
-        sqlQuery.append("message='" + msg.getMessage()+ "', ");
-        sqlQuery.append("dateadded='" + msg.getDateadded()+ "' ");
-        sqlQuery.append("where messageid=" + msg.getMessageId() + ";");
+        sqlQuery.append("set message='" + msg.getMessage() + "', ");
+        sqlQuery.append("userId=" + msg.getUserId() + " ");
+        sqlQuery.append("where messageId=" + msg.getMessageId() + ";");
         Statement st = createStatement();
         logger.log(Level.INFO, "UPDATE SQL=" + sqlQuery.toString());
         return st.execute(sqlQuery.toString());
@@ -129,9 +127,7 @@ public class ModelMessages {
     
     public int newMessage(Message msg) throws SQLException
     {
-        String sqlInsert = (msg.getDateadded() != null ?
-                "insert into messages (userid, message, dateadded) values (" + msg.getUserId() + ",'" + msg.getMessage()+ "','" + msg.getDateadded().toString() + "');" :
-                "insert into messages (userid, message, dateadded) values (" + msg.getUserId() + ",'" + msg.getMessage()+ "',now());");
+        String sqlInsert = ("insert into messages (userid, message, dateadded) values (" + msg.getUserId() + ",'" + msg.getMessage()+ "',now());");
                 
         Statement s = createStatement();
         logger.log(Level.INFO, "attempting statement execute");
