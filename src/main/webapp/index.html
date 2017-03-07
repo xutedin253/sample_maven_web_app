@@ -135,7 +135,7 @@
                     type: 'POST',
                     url: url,
                     datatype: 'json',
-                    data: JSON.stringify(user),
+                    data: JSON.stringify(message),
                     contentType: 'application/json',
                     success: render_newuser
                   }); 
@@ -145,7 +145,7 @@
             {
                 // Update an existing record
                 var messageid = document.getElementById("messageid");
-                var userid = document.getElementById("nauseridme");
+                var userid = document.getElementById("userid");
                 var messageString = document.getElementById("messageString");
                 var message = { 'messageid': messageid.value,
                               'userid': userid.value,
