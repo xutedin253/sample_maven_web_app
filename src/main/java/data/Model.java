@@ -182,7 +182,7 @@ public class Model {
         //String sqlInsert="insert into messages ("
     }
     
-       public Message[] getMessages(int messageId) throws SQLException
+    public Message[] getMessages(int messageId) throws SQLException
     {
         LinkedList<Message> ll = new LinkedList<Message>();
         String sqlQuery ="select * from messages";
