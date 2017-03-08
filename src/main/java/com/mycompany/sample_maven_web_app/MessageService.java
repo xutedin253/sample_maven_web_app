@@ -43,7 +43,7 @@ public class MessageService {
     
     @GET
     @Path("{messageid}")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Message> getMessages(@PathParam("messageid") String id) {
         LinkedList<Message> messageList = new LinkedList<Message>();
      
@@ -66,22 +66,7 @@ public class MessageService {
                 logger.log(Level.WARNING, "Error getting users:" + e.toString());
                 return null;
         }
-        
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("<html><body><style>table, th, td {font-family:Arial,Verdana,sans-serif;font-size:16px;padding: 0px;border-spacing: 0px;}</style><b>MESSAGES LIST:</b><br><br><table cellpadding=10 border=1><tr><td>Message Id</td><td>User Id</td><td>Message</td><td>Date Added</td></tr>");
-//        try
-//        {
-//            ModelMessages db = ModelMessages.singleton();
-//            Message[] msgs = db.getMessages();
-//            for (int i=0;i<msgs.length;i++)
-//                sb.append("<tr><td>" + msgs[i].getMessageId()+ "</td><td>" + msgs[i].getUserId()+ "</td><td>" + msgs[i].getMessage()+ "</td><td>" + msgs[i].getDateadded()+ "</td></tr>");
-//        }
-//        catch (Exception e)
-//        {
-//            sb.append("</table><br>Error getting messages: " + e.toString() + "<br>");
-//        }
-//        sb.append("</table></body></html>");
-//        return sb.toString();
+
     }
     
     @PUT
