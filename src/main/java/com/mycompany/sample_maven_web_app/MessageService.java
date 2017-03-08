@@ -32,7 +32,7 @@ import org.codehaus.jettison.json.JSONObject;
  *
  * @author wlloyd
  */
-@Path("Messages")
+@Path("messages")
 public class MessageService {
     
     static final Logger logger = Logger.getLogger(MessageService.class.getName());
