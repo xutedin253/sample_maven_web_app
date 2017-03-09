@@ -257,7 +257,7 @@
     function render_newuser(data)
     {
         $.each(data, function(index, message) { 
-          document.getElementById("messageid").value = message.messageid;
+          document.getElementById("messageid").value = message.messageId;
         });
         document.getElementById("messageid").disabled = false;
         $('#mybody').empty();
