@@ -64,8 +64,9 @@
         $('#get-data').click(function () 
         {
           var messageid = document.getElementById("messageid");
-          var url='tcss360/messages/0';
-
+          var url='tcss360/messages/'+messageid.value;
+          console.log(messageid);
+          console.log(url);
           $.ajax({
             type: 'GET',
             url: url,
@@ -116,7 +117,7 @@
         {
            document.getElementById("messageid").disabled = true;
            document.getElementById("message").value = "";
-           document.getElementById("dateadded").value = "";
+           document.getElementById("userid").value = "";
         });        
 
         // Save-User Click function
@@ -135,7 +136,7 @@
                 var obj = {'userId': userid.value,     
                             'message': message.value };   
                         console.log(obj);
-                var url='tcss360/messages';
+                var url='tcss360/messages/';
                 if (confirm('Are you sure - CREATE ' + message.value + ' ?')) {
                   $.ajax({
                     type: 'POST',
@@ -255,9 +256,12 @@
     
     // display the userid of a newly created user as supplied from the service
     function render_newuser(data)
-    {
-        $.each(data, function(index, message) { 
+    {     
+        console.log(data);
+        $.each(data, function(index, message) {
+            
           document.getElementById("messageid").value = message.messageId;
+       
         });
         document.getElementById("messageid").disabled = false;
         $('#mybody').empty();

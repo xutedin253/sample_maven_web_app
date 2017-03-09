@@ -223,8 +223,10 @@ public class Model {
         return st.execute(sqlQuery.toString());
     }
     
-    public int newMessage(Message msg) throws SQLException
+    public Message newMessage(Message msg) throws SQLException
     {
+
+        
         String sqlInsert = ("insert into messages (userid, message, dateadded) values (" + msg.getUserId() + ",'" + msg.getMessage()+ "',now());");
                 
         Statement s = createStatement();
@@ -237,7 +239,8 @@ public class Model {
         while (rs.next())
             msgid = rs.getInt(1);   // assuming 1st column is msgid
         logger.log(Level.INFO, "The new msg id=" + msgid);
-        return msgid;
+        msg.setMessageId(msgid);
+        return msg;
     }
 }
 

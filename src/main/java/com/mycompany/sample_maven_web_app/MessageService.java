@@ -70,7 +70,7 @@ public class MessageService {
     }
     
     @PUT
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String updateMessage(String jobj) throws IOException
     {
@@ -99,7 +99,7 @@ public class MessageService {
     }
     
     @DELETE
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String deleteMessage(String jobj) throws IOException
     {
@@ -128,32 +128,65 @@ public class MessageService {
     }
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String CreateMessage(String jobj) throws IOException 
+    public List<Message> CreateMessage(String jobj) throws IOException 
     {
+        
+                logger.log(Level.INFO, "RECEIVED CREATE REQUEST FOR:\n");
+        logger.log(Level.INFO, "OBJECT:" + jobj + "\n");
+        
+        LinkedList<Message> lmessage = new LinkedList<Message>();
+
         ObjectMapper mapper = new ObjectMapper();
-        Message msg = mapper.readValue(jobj.toString(), Message.class);
-        StringBuilder text = new StringBuilder();
+        Message message = mapper.readValue(jobj.toString(), Message.class);
+        
+     
+//        if (user.getMessages() != null)
+//            for (Object msg : user.getMessages())
+//                text.append(msg.toString() + "\n");
         
         try {
             Model db = Model.singleton();
-            int msgid = db.newMessage(msg);
-            logger.log(Level.INFO, "msg persisted to db with msgid=" + msgid);
-            text.append("Msg id persisted with id=" + msgid);
+            Message usr = db.newMessage(message);
+//            logger.log(Level.INFO, "user persisted to db as userid=" + usr.getUserid());
+//            text.append("User id persisted with id=" + usr.getUserid());
+            lmessage.add(usr);
         }
         catch (SQLException sqle)
         {
             String errText = "Error persisting user after db connection made:\n" + sqle.getMessage() + " --- " + sqle.getSQLState() + "\n";
             logger.log(Level.SEVERE, errText);
-            text.append(errText);
+//            text.append(errText);
         }
         catch (Exception e)
         {
-            logger.log(Level.SEVERE, "Error connecting to db.");
+//            logger.log(Level.SEVERE, "Error connecting to db.");
         }
         
-        return text.toString();
+        return lmessage;
+//        ObjectMapper mapper = new ObjectMapper();
+//        Message msg = mapper.readValue(jobj.toString(), Message.class);
+//        StringBuilder text = new StringBuilder();
+//        
+//        try {
+//            Model db = Model.singleton();
+//            int msgid = db.newMessage(msg);
+//            logger.log(Level.INFO, "msg persisted to db with msgid=" + msgid);
+//            text.append("Msg id persisted with id=" + msgid);
+//        }
+//        catch (SQLException sqle)
+//        {
+//            String errText = "Error persisting user after db connection made:\n" + sqle.getMessage() + " --- " + sqle.getSQLState() + "\n";
+//            logger.log(Level.SEVERE, errText);
+//            text.append(errText);
+//        }
+//        catch (Exception e)
+//        {
+//            logger.log(Level.SEVERE, "Error connecting to db.");
+//        }
+//        
+//        return text.toString();
     }
     
 }
