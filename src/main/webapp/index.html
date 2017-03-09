@@ -95,7 +95,7 @@
         {
            var messageid = document.getElementById("messageid");
            var message = document.getElementById("message");
-           var obj = { 'messageid': messageid.value };           
+           var obj = { 'messageId': messageid.value };           
            var url='tcss360/messages/';
            if (confirm('Are you sure - DELETE ' + message.value + '-(' + messageid.value + ') ?')) {
              $.ajax({
@@ -132,9 +132,9 @@
                 var userid = document.getElementById("userid");
                 var message = document.getElementById("message");
                 
-                var obj = {'userid': userid.value,     
-                            'message': message.value,
-                            'dateadded': '' };           
+                var obj = {'userId': userid.value,     
+                            'message': message.value };   
+                        console.log(obj);
                 var url='tcss360/messages';
                 if (confirm('Are you sure - CREATE ' + message.value + ' ?')) {
                   $.ajax({
@@ -153,8 +153,8 @@
                 var messageid = document.getElementById("messageid");
                 var userid = document.getElementById("userid");
                 var message = document.getElementById("message");
-                var obj = { 'messageid': messageid.value,
-                            'userid': userid.value,
+                var obj = { 'messageId': messageid.value,
+                            'userId': userid.value,
                              'message': message.value,
                              'dateadded': '' };           
                 var url='tcss360/messages/';
