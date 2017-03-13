@@ -56,121 +56,121 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>    
     <script language="javascript">
     $(document).ready(function () { 
-        var old_messageid = document.getElementById("messageid").value;
-        
-        // Get-Data Click function
-        //
-        // Calls the GET service to lookup a currently entered userid
-        $('#get-data').click(function () 
-        {
-          var messageid = document.getElementById("messageid");
-          var url='tcss360/messages/'+messageid.value;
-          console.log(messageid);
-          console.log(url);
-          $.ajax({
-            type: 'GET',
-            url: url,
-            datatype: 'json',
-            success: render_form
-          });        
-        });
+//        var old_messageid = document.getElementById("messageid").value;
+//        
+//        // Get-Data Click function
+//        //
+//        // Calls the GET service to lookup a currently entered userid
+//        $('#get-data').click(function () 
+//        {
+//          var messageid = document.getElementById("messageid");
+//          var url='tcss360/messages/'+messageid.value;
+//          console.log(messageid);
+//          console.log(url);
+//          $.ajax({
+//            type: 'GET',
+//            url: url,
+//            datatype: 'json',
+//            success: render_form
+//          });        
+//        });
 
-        $('#messageid').focusin(function () {
-            old_messageid = document.getElementById("messageid").value;    
-        });
+//        $('#messageid').focusin(function () {
+//            old_messageid = document.getElementById("messageid").value;    
+//        });
 
         // If the user exits the userid textbox and places focus on another
         // GUI control on the screen, and if the user id had changed since
         // the user entered the box, then reload the user form
-        $('#messageid').focusout(function () {
-            var curr_messageid = document.getElementById("messageid").value;    
-            //alert(curr_userid + '---' + old_userid)
-            if (curr_messageid != old_messageid)
-                getuser();
-        });
+//        $('#messageid').focusout(function () {
+//            var curr_messageid = document.getElementById("messageid").value;    
+//            //alert(curr_userid + '---' + old_userid)
+//            if (curr_messageid != old_messageid)
+//                getuser();
+//        });
         
         // Delete-User Click function
         //
         // Calls the DELETE service to delete the selected user
-        $('#delete-user').click(function ()
-        {
-           var messageid = document.getElementById("messageid");
-           var message = document.getElementById("message");
-           var obj = { 'messageId': messageid.value };           
-           var url='tcss360/messages/';
-           if (confirm('Are you sure - DELETE ' + message.value + '-(' + messageid.value + ') ?')) {
-             $.ajax({
-               type: 'DELETE',
-               url: url,
-               datatype: 'json',
-               data: JSON.stringify(obj),
-               contentType: 'application/json',
-               success: render_delete
-             }); 
-           } 
-        });
+//        $('#delete-user').click(function ()
+//        {
+//           var messageid = document.getElementById("messageid");
+//           var message = document.getElementById("message");
+//           var obj = { 'messageId': messageid.value };           
+//           var url='tcss360/messages/';
+//           if (confirm('Are you sure - DELETE ' + message.value + '-(' + messageid.value + ') ?')) {
+//             $.ajax({
+//               type: 'DELETE',
+//               url: url,
+//               datatype: 'json',
+//               data: JSON.stringify(obj),
+//               contentType: 'application/json',
+//               success: render_delete
+//             }); 
+//           } 
+//        });
         
         // New-User Click function
         //
         // Clears the form to allow entry of a new user record
-        $('#new-user').click(function ()
-        {
-           document.getElementById("messageid").disabled = true;
-           document.getElementById("message").value = "";
-           document.getElementById("userid").value = "";
-        });        
+//        $('#new-user').click(function ()
+//        {
+//           document.getElementById("messageid").disabled = true;
+//           document.getElementById("message").value = "";
+//           document.getElementById("userid").value = "";
+//        });        
 
         // Save-User Click function
         //
         // If a new user, calls the POST to create a new user
         // If an existing user, call the PUT to update the user
-        $('#save-user').click(function ()
-        {
-            if (document.getElementById("messageid").disabled)
-            {
-                // Create a new record
-                //need userid!!!!
-                var userid = document.getElementById("userid");
-                var message = document.getElementById("message");
-                
-                var obj = {'userId': userid.value,     
-                            'message': message.value };   
-                        console.log(obj);
-                var url='tcss360/messages/';
-                if (confirm('Are you sure - CREATE ' + message.value + ' ?')) {
-                  $.ajax({
-                    type: 'POST',
-                    url: url,
-                    datatype: 'json',
-                    data: JSON.stringify(obj),
-                    contentType: 'application/json',
-                    success: render_newuser
-                  }); 
-                }                 
-            }
-            else
-            {
-                // Update an existing record
-                var messageid = document.getElementById("messageid");
-                var userid = document.getElementById("userid");
-                var message = document.getElementById("message");
-                var obj = { 'messageId': messageid.value,
-                            'userId': userid.value,
-                             'message': message.value,
-                             'dateadded': '' };           
-                var url='tcss360/messages/';
-                if (confirm('Are you sure - UPDATE ' + message.value + ' ?')) {
-                  $.ajax({
-                    type: 'PUT',
-                    url: url,
-                    datatype: 'json',
-                    data: JSON.stringify(obj),
-                    contentType: 'application/json',
-                    success: render_clear
-                  }); 
-                }                 
-            }
-        });
+//        $('#save-user').click(function ()
+//        {
+//            if (document.getElementById("messageid").disabled)
+//            {
+//                // Create a new record
+//                //need userid!!!!
+//                var userid = document.getElementById("userid");
+//                var message = document.getElementById("message");
+//                
+//                var obj = {'userId': userid.value,     
+//                            'message': message.value };   
+//                        console.log(obj);
+//                var url='tcss360/messages/';
+//                if (confirm('Are you sure - CREATE ' + message.value + ' ?')) {
+//                  $.ajax({
+//                    type: 'POST',
+//                    url: url,
+//                    datatype: 'json',
+//                    data: JSON.stringify(obj),
+//                    contentType: 'application/json',
+//                    success: render_newuser
+//                  }); 
+//                }                 
+//            }
+//            else
+//            {
+//                // Update an existing record
+//                var messageid = document.getElementById("messageid");
+//                var userid = document.getElementById("userid");
+//                var message = document.getElementById("message");
+//                var obj = { 'messageId': messageid.value,
+//                            'userId': userid.value,
+//                             'message': message.value,
+//                             'dateadded': '' };           
+//                var url='tcss360/messages/';
+//                if (confirm('Are you sure - UPDATE ' + message.value + ' ?')) {
+//                  $.ajax({
+//                    type: 'PUT',
+//                    url: url,
+//                    datatype: 'json',
+//                    data: JSON.stringify(obj),
+//                    contentType: 'application/json',
+//                    success: render_clear
+//                  }); 
+//                }                 
+//            }
+//        });
         
         // Dynamic table event handler
         // 
@@ -182,17 +182,17 @@
         // 
         // Use .text() as td doesn't have method .val()
         // Empty first time as the td has no text until clicked.
-        $(".table-body").on('click', 'tr', function() {
-            var clicked_messageid=$(this).find('td:first').text();
-            old_messageid = clicked_messageid;
-            var url='tcss360/messages/'+clicked_messageid;
-             $.ajax({
-               type: 'GET',
-               url: url,
-               datatype: 'json',
-               success: render_form
-             });        
-         });
+//        $(".table-body").on('click', 'tr', function() {
+//            var clicked_messageid=$(this).find('td:first').text();
+//            old_messageid = clicked_messageid;
+//            var url='tcss360/messages/'+clicked_messageid;
+//             $.ajax({
+//               type: 'GET',
+//               url: url,
+//               datatype: 'json',
+//               success: render_form
+//             });        
+//         });
          
 
      
@@ -214,19 +214,19 @@
         }); 
     }
     
-    // gets and displays users by calling render
-    function getuser() {
-        // Form load
-        var messageid = document.getElementById("messageid"); 
-        var url='tcss360/messages/' + messageid.value;
-
-        $.ajax({
-          type: 'GET',
-          url: url,
-          datatype: 'json',
-          success: render_form
-        }); 
-    }    
+//    // gets and displays users by calling render
+//    function getuser() {
+//        // Form load
+//        var messageid = document.getElementById("messageid"); 
+//        var url='tcss360/messages/' + messageid.value;
+//
+//        $.ajax({
+//          type: 'GET',
+//          url: url,
+//          datatype: 'json',
+//          success: render_form
+//        }); 
+//    }    
     
     // renders the user table
     function render(data)  {
@@ -240,50 +240,50 @@
     }
     
     // clears the table, reloads the users
-    function render_clear(data)
-    {
-        $('#mybody').empty();
-        getusers();
-    }
+//    function render_clear(data)
+//    {
+//        $('#mybody').empty();
+//        getusers();
+//    }
     
     // clears the table, reloads the users, clears the user id textbox
-    function render_delete(data)
-    {
-        $('#mybody').empty();
-        getusers();
-        document.getElementById("messageid").value = "";
-    }
+//    function render_delete(data)
+//    {
+//        $('#mybody').empty();
+//        getusers();
+//        document.getElementById("messageid").value = "";
+//    }
     
     // display the userid of a newly created user as supplied from the service
-    function render_newuser(data)
-    {     
-        console.log(data);
-        $.each(data, function(index, message) {
-            
-          document.getElementById("messageid").value = message.messageId;
-       
-        });
-        document.getElementById("messageid").disabled = false;
-        $('#mybody').empty();
-        getusers();
-    }
+//    function render_newuser(data)
+//    {     
+//        console.log(data);
+//        $.each(data, function(index, message) {
+//            
+//          document.getElementById("messageid").value = message.messageId;
+//       
+//        });
+//        document.getElementById("messageid").disabled = false;
+//        $('#mybody').empty();
+//        getusers();
+//    }
     
     // displays a selected user in the form
-    function render_form(data)  {
-      var list = data;
-      if (list)
-        $.each(list, function(index, message) { 
-            $('#messageid').val(message.messageId);
-            $('#userid').val(message.userId);
-            $('#message').val(message.message);
-            $('#dateadded').val(message.dateadded);
-        });
-      else
-      {
-        document.getElementById("message").value = "";
-        document.getElementById("dateadded").value = "";
-      }
-    }    
+//    function render_form(data)  {
+//      var list = data;
+//      if (list)
+//        $.each(list, function(index, message) { 
+//            $('#messageid').val(message.messageId);
+//            $('#userid').val(message.userId);
+//            $('#message').val(message.message);
+//            $('#dateadded').val(message.dateadded);
+//        });
+//      else
+//      {
+//        document.getElementById("message").value = "";
+//        document.getElementById("dateadded").value = "";
+//      }
+//    }    
   </script>
   </head>
   <body  onload="">
@@ -291,8 +291,8 @@
    User Editor - Sample Maven Web App
    </div>
    <br>
-   <table id="myform">
-   <tr>
+<!--   <table id="myform">
+      <tr>
        <td>
            <input type="button" value="Get User" onclick="" id="get-data"/>
            <input type="button" value="New User" onclick="" id="new-user"/>
@@ -312,7 +312,7 @@
        <td>Enter User Message :  </td>
        <td><input type="text" id="message" size="20"/> </td>
    </tr>
-   </table>
+   </table>-->
    <br>
    <table id="mytable" class="table">
            <thead>
@@ -324,6 +324,8 @@
              </tr>               
            </thead>
            <tbody id="mybody" class="table-body">
+               <tr>
+        
            </tbody>
    </table>
   </body>
